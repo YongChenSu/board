@@ -18,6 +18,19 @@ const todoController = {
       });
     });
   },
+
+  newTodo: (req, res) => {
+    // 這邊的 content 是 views 的 addTodo 中填寫 "name=content"
+    const content = req.body.content;
+    todoModel.add(content, (err) => {
+      if (err) return console.log(err);
+      res.redirect("/todos");
+    });
+  },
+
+  addTodo: (req, res) => {
+    res.render("addTodo");
+  },
 };
 
 module.exports = todoController;
