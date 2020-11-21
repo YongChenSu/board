@@ -8,6 +8,7 @@ const app = express();
 const port = 5001;
 
 const todoController = require("./controllers/todo");
+const userController = require("./controllers/user");
 
 app.set("view engine", "ejs");
 app.use(
@@ -32,8 +33,8 @@ app.use(flash());
 */
 // 捷徑：req.locals
 app.use((req, res, next) => {
-  // 跟這我念一次： req.session, res.locals
-  res.locals.isLogin = req.session.isLogin;
+  // 跟著我念一次： req.session, res.locals
+  res.locals.username = req.session.username;
   res.locals.errorMessage = req.flash("errorMessage");
   next();
 });
@@ -41,26 +42,19 @@ app.use((req, res, next) => {
 app.post("/todos", todoController.newTodo);
 app.get("/todos", todoController.getAll);
 app.get("/todos/:id", todoController.get);
-app.get("/", todoController.addTodo);
-app.get("/login", (req, res) => {
-  // res.render("login", {
-  //   errorMessage: req.flash("errorMessage"),
-  // });
-  res.render("login");
+app.get("/", (req, res) => {
+  res.render("index");
 });
-app.post("/login", (req, res) => {
-  if (req.body.password === "abc") {
-    req.session.isLogin = true;
-    res.redirect("/");
-  } else {
-    req.flash("errorMessage", "Please input correct password");
-    res.redirect("/login");
-  }
-});
-app.get("/logout", (req, res) => {
-  req.session.isLogin = false;
-  res.redirect("/");
-});
+
+function redirectBack(req, res) {
+  res.redirect("back");
+}
+
+app.get("/login", userController.login);
+app.post("/login", userController.handleLogin, redirectBack);
+app.get("/register", userController.register);
+app.post("/register", userController.handleRegister, redirectBack);
+app.get("/logout", userController.logout);
 
 app.listen(port, () => {
   db.connect();
