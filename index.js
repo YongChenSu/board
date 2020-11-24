@@ -9,7 +9,7 @@ const port = 5001;
 
 const todoController = require("./controllers/todo");
 const userController = require("./controllers/user");
-
+const commentController = require("./controllers/comment");
 app.set("view engine", "ejs");
 app.use(
   session({
@@ -42,9 +42,7 @@ app.use((req, res, next) => {
 app.post("/todos", todoController.newTodo);
 app.get("/todos", todoController.getAll);
 app.get("/todos/:id", todoController.get);
-app.get("/", (req, res) => {
-  res.render("index");
-});
+app.get("/", commentController.index);
 
 function redirectBack(req, res) {
   res.redirect("back");
@@ -52,10 +50,12 @@ function redirectBack(req, res) {
 
 app.get("/login", userController.login);
 app.post("/login", userController.handleLogin, redirectBack);
+app.get("/logout", userController.logout);
 app.get("/register", userController.register);
 app.post("/register", userController.handleRegister, redirectBack);
-app.get("/logout", userController.logout);
 
+app.post("/comments", commentController.add);
+app.get("/delete_comments/:id", commentController.delete);
 app.listen(port, () => {
   db.connect();
   console.log(`Example app listening on ${port}`);
