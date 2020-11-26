@@ -3,7 +3,7 @@ const db = require("../db");
 const commentModel = {
   add: (username, content, cb) => {
     db.query(
-      "INSERT INTO comments(username, content) VALUES(?, ?)",
+      "insert into comments(username, content) values(?, ?)",
       [username, content],
       (err, results) => {
         if (err) return cb(err);
@@ -15,9 +15,9 @@ const commentModel = {
   getAll: (cb) => {
     db.query(
       `SELECT U.nickname, C.content, C.id, C.username
-      FROM comments AS C
-      LEFT JOIN users AS U on U.username = C.username
-      ORDER BY C.id DESC
+       FROM   comments as C
+       LEFT JOIN users as U on U.username = C.username
+       ORDER BY C.id DESC
       `,
       (err, results) => {
         if (err) return cb(err);
@@ -29,9 +29,9 @@ const commentModel = {
   get: (id, cb) => {
     db.query(
       `SELECT U.nickname, C.content, C.id, C.username
-      FROM comments AS C
-      LEFT JOIN users AS U on U.username = C.username
-      WHERE C.id = ?
+       FROM   comments as C
+       LEFT JOIN users as U on U.username = C.username
+       WHERE C.id = ? 
       `,
       [id],
       (err, results) => {
@@ -41,11 +41,11 @@ const commentModel = {
     );
   },
 
-  update: (username, id, content, cb) => {
+  delete: (username, id, cb) => {
     db.query(
-      // username 檢查是否為該使用者的文章
-      `UPDATE comments SET content = ? WHERE id = ? AND username = ?`,
-      [content, id, username],
+      `DELETE FROM comments where id=? AND username=?
+      `,
+      [id, username],
       (err, results) => {
         if (err) return cb(err);
         cb(null);
@@ -53,13 +53,14 @@ const commentModel = {
     );
   },
 
-  delete: (username, id, cb) => {
+  update: (username, id, content, cb) => {
     db.query(
-      `DELETE FROM comments WHERE id = ? AND username = ?`,
-      [id, username],
+      `update comments set content=? where id=? and username=?
+      `,
+      [content, id, username],
       (err, results) => {
         if (err) return cb(err);
-        cb(null, results);
+        cb(null);
       }
     );
   },

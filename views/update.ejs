@@ -1,6 +1,18 @@
-<h1>編輯文章</h1>
+<!doctype html>
+<head>
+  <%- include('template/head') %>
+</head>
+<html>
 
-<form method="POST" action="/update_comments/<%= comment.id %>">
-  <textarea name="content"><%= comment.content %></textarea>
-  <input type="submit" />
-</form>
+  <%- include('template/navbar') %>
+  <div class="container">
+      <form method="POST" action="/update_comments/<%= comment.id %>">
+        <div class="form-group">
+          <label>編輯文章</label>
+          <textarea name="content" class="form-control"><%= comment.content %></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+  </div>
+
+</html>
