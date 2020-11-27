@@ -14,7 +14,7 @@ const userModel = {
 
   get: (username, cb) => {
     db.query(
-      "SELECT * from users WHERE username = ?",
+      "SELECT * from users where username = ?",
       [username],
       (err, results) => {
         if (err) return cb(err);

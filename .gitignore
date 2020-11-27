@@ -1,2 +1,3 @@
 # 檔案名稱 .gitignore
 db.js
+node_modules/

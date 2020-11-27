@@ -13,6 +13,7 @@ const todoController = {
   get: (req, res) => {
     const id = req.params.id;
     todoModel.get(id, (err, results) => {
+      if (err) return console.log(err);
       res.render("todo", {
         todo: results[0],
       });
@@ -20,7 +21,6 @@ const todoController = {
   },
 
   newTodo: (req, res) => {
-    // 這邊的 content 是 views 的 addTodo 中填寫 "name=content"
     const content = req.body.content;
     todoModel.add(content, (err) => {
       if (err) return console.log(err);

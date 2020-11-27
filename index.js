@@ -56,7 +56,8 @@ app.post("/register", userController.handleRegister, redirectBack);
 
 app.post("/comments", commentController.add);
 app.get("/delete_comments/:id", commentController.delete);
-// app.get("/update_comments/:id", commentController.delete);
+app.get("/update_comments/:id", commentController.update);
+app.post("/update_comments/:id", commentController.handleUpdate);
 
 app.listen(port, () => {
   db.connect();
